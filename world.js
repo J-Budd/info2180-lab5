@@ -1,8 +1,10 @@
 window.onload = function() {
-    const lookupButton = document.getElementById('lookup');
+    const lookupCounButton = document.getElementById('lookup_country');
+    const lookupCiButton = document.getElementById('lookup_city');
     const resultDiv = document.getElementById('result');
-    lookupButton.addEventListener('click', function() {
-        // Get the country name from the input field
+    
+    // Lookup Country button
+    lookupCounButton.addEventListener('click', function() {
         const country = document.getElementById('country').value.trim();
         resultDiv.innerHTML = 'Loading...';
         const xhr = new XMLHttpRequest();
@@ -16,5 +18,26 @@ window.onload = function() {
             }
         };
         xhr.send();
+    });
+
+    // Lookup Cities button
+    lookupCiButton.addEventListener('click', function() {
+        const country = document.getElementById('country').value.trim();
+        if (!country) {
+            resultDiv.innerHTML = 'Please enter a country name.';
+            return;
+        }
+        resultDiv.innerHTML = 'Loading...';
+        const xhs = new XMLHttpRequest();
+
+        xhs.open('GET', 'world.php?country=' + encodeURIComponent(country) + '&lookup=cities', true);
+        xhs.onload = function() {
+            if (xhs.status === 200) {
+                resultDiv.innerHTML = xhs.responseText;
+            } else {
+                resultDiv.innerHTML = 'Error: Unable to fetch data.';
+            }
+        };
+        xhs.send();
     });
 };
